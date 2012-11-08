@@ -19,11 +19,13 @@
                 numZoomLevels: 19,
                 maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
             });
+            map.addControl(new OpenLayers.Control.Attribution());
 
             var addMapLayer = new OpenLayers.Layer.TMS(
             	"gsimap",
             	"http://cyberjapandata.gsi.go.jp/sqras/all/",
             	{
+					attribution : '<a href=\"http://portal.cyberjapan.jp/\"><img src=\"http://cyberjapan.jp/images/icon01.gif\" alt=\"電子国土\"></a>',
 					getURL: getMyTileUrl,
 //					type: 'png', did: 'DJBMM'	//地図
 					type: 'jpg', did: 'DJBMO'	//オルソ
