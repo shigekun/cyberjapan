@@ -16,3 +16,6 @@ QGIS OpenLayers Plugin
     self.olLayerTypeRegistry.add( OlLayerType(self, 'cyberjapan',  'html/cjp_icon.png',  'cyberjapan.html', True) )
 を追加する。
 
+地図とオルソの切り替えはcyberjapan.htmlを変更
+//					type: 'png', did: 'DJBMM',	//地図
+					type: 'jpg', did: 'DJBMO',	//オルソ
