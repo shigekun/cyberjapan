@@ -8,13 +8,15 @@
         var map;
         var oloMarker; // OpenLayer Overview Marker
 
+		var maxResolution = 156543.03390625;
         function init() {
             map = new OpenLayers.Map('map', {
                 theme: null,
                 controls: [],
                 projection: new OpenLayers.Projection("EPSG:900913"),
                 units: "m",
-                maxResolution: 156543.0339,
+                maxResolution: maxResolution,
+                numZoomLevels: 19,
                 maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
             });
 
@@ -22,9 +24,9 @@
             	"gsimap",
             	"http://cyberjapandata.gsi.go.jp/sqras/all/",
             	{
-					getURL:getMyTileUrl,
-					type:'png',did:'DJBMM'	//地図
-					//type:'jpg',did:'DJBMO'	//オルソ
+					getURL: getMyTileUrl,
+//					type: 'png', did: 'DJBMM'	//地図
+					type: 'jpg', did: 'DJBMO'	//オルソ
 				}
             );
 
@@ -42,14 +44,30 @@
 			x = ("0000000" + x).slice(-7);	//0うめで7桁の文字列にする
 			y = ("0000000" + y).slice(-7);	//0うめで7桁の文字列にする
 
+			var type = this.type;
 			var did = this.did;
 			var url = this.url;
 			if (url instanceof Array) {
 				url = this.selectUrl(path, url);
 			}
-			
+
 			if((z>=15)&&(z<=17))	{
-				var path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ this.type; 
+				var path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
+				url = url + path;
+			}else if((z>=12)&&(z<=14))	{
+				did = "BAFD200K";
+				type = "png";
+				var path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
+				url = url + path;
+			}else if((z>=9)&&(z<=11))	{
+				did = "BAFD1000K";
+				type = "png";
+				var path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
+				url = url + path;
+			}else if((z>=5)&&(z<=8))	{
+				did = "JAIS";
+				type = "png";
+				var path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
 				url = url + path;
 			}else{
 				url = "http://cyberjapandata.gsi.go.jp/sqras/transparent.png"
