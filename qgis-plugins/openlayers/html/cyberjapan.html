@@ -2,37 +2,51 @@
   <head>
     <title>OpenLayers Cyberjapan Layer</title>
     <link rel="stylesheet" href="qgis.css" type="text/css">
-    <script src="OpenLayers-jsmin.js"></script>
+    <script src="OpenLayers.js"></script>
     <script src="OlOverviewMarker.js"></script>
     <script type="text/javascript">
         var map;
+        var loadEnd;
         var oloMarker; // OpenLayer Overview Marker
-
-		var maxResolution = 156543.03390625;
+		var maxResolution = 156543.0339;
         function init() {
             map = new OpenLayers.Map('map', {
                 theme: null,
                 controls: [],
-                projection: new OpenLayers.Projection("EPSG:900913"),
+                projection: new OpenLayers.Projection("EPSG:3857"),
                 units: "m",
                 maxResolution: maxResolution,
-                numZoomLevels: 19,
                 maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
+//                ,numZoomLevels: 19
             });
-            map.addControl(new OpenLayers.Control.Attribution());
 
-            var addMapLayer = new OpenLayers.Layer.TMS(
+            loadEnd = false;
+            function layerLoadStart(event)
+            {
+              loadEnd = false;
+            }
+            function layerLoadEnd(event)
+            {
+              loadEnd = true;
+            }
+
+            var addMapLayer = new OpenLayers.Layer.XYZ(
             	"gsimap",
             	"http://cyberjapandata.gsi.go.jp/sqras/all/",
             	{
 					attribution : '<a href=\"http://portal.cyberjapan.jp/\"><img src=\"http://cyberjapan.jp/images/icon01.gif\" alt=\"電子国土\"></a>',
 					getURL: getMyTileUrl,
-//					type: 'png', did: 'DJBMM'	//地図
-					type: 'jpg', did: 'DJBMO'	//オルソ
+//					type: 'png', did: 'DJBMM',	//地図
+					type: 'jpg', did: 'DJBMO',	//オルソ
+					eventListeners: {
+					  "loadstart": layerLoadStart,
+					  "loadend": layerLoadEnd
+					}
 				}
             );
 
             map.addLayer(addMapLayer);
+            map.addControl(new OpenLayers.Control.Attribution());
             map.setCenter(new OpenLayers.LonLat(0, 0), 2);
             oloMarker = new OlOverviewMarker(map, getPathUpper(document.URL) + '/x.png')
         }
@@ -42,7 +56,11 @@
 			var x = Math.round ((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
 			var y = Math.round ((this.maxExtent.top - bounds.top) / (res * this.tileSize.h));
 			var z = map.getZoom();
-			
+
+			if ( x < 0 || y < 0 || x > ( 1 << z ) || y > ( 1 << z ) ) {
+				return "http://cyberjapandata.gsi.go.jp/sqras/transparent.png";
+			}
+
 			x = ("0000000" + x).slice(-7);	//0うめで7桁の文字列にする
 			y = ("0000000" + y).slice(-7);	//0うめで7桁の文字列にする
 
@@ -52,24 +70,29 @@
 			if (url instanceof Array) {
 				url = this.selectUrl(path, url);
 			}
-
+			var path = "";
 			if((z>=15)&&(z<=17))	{
-				var path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
+				path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
 				url = url + path;
 			}else if((z>=12)&&(z<=14))	{
 				did = "BAFD200K";
 				type = "png";
-				var path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
+				path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
 				url = url + path;
 			}else if((z>=9)&&(z<=11))	{
 				did = "BAFD1000K";
 				type = "png";
-				var path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
+				path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
 				url = url + path;
 			}else if((z>=5)&&(z<=8))	{
 				did = "JAIS";
 				type = "png";
-				var path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
+				path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
+				url = url + path;
+			}else if((z>=0)&&(z<=4))	{
+				did = "GLMD";
+				type = "png";
+				path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
 				url = url + path;
 			}else{
 				url = "http://cyberjapandata.gsi.go.jp/sqras/transparent.png"
