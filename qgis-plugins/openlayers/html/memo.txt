@@ -1,3 +1,11 @@
+QGISのOpenLayersプラグインで電子国土を表示するもの。
+
+
+利用には国土地理院背景地図等データ利用規約に従って下さい。
+ http://portal.cyberjapan.jp/portalsite/kiyaku/index.html#haikei
+
+
+
 QGIS OpenLayers Plugin
 左上のメニューバーのプラグインから「Pythonプラグインを呼びだす」を選択
 プラグインの一覧から「OpenLayers Plugin」を選択し、
