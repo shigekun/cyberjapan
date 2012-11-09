@@ -7,6 +7,7 @@ OpenLayersのTMSレイヤーで電子国土を表示するもの。
 WebサーバでPHPとmod_rewriteが使えること。
 
 /cyberjapan に.htaccess と cj.php を置く。
+他の場所にする場合は.htaccessも変えること。
 
 
 OpenLayersのレイヤー
