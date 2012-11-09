@@ -9,7 +9,7 @@ WebサーバでPHPとmod_rewriteが使えること。
 /cyberjapan に.htaccess と cj.php を置く。
 他の場所にする場合は.htaccessの中も変えること。
 
-
+使い方
 OpenLayersのレイヤー
 		var layer_DJBMM = new OpenLayers.Layer.TMS(
 			"DJBMM",
