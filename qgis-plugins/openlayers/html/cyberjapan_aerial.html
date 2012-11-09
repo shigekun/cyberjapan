@@ -77,7 +77,12 @@ http://portal.cyberjapan.jp/portalsite/version/v4/haishin.html
 				url = this.selectUrl(path, url);
 			}
 			var path = "";
-			if((z>=15)&&(z<=17))	{
+			if(z==18)	{
+				did = "TOHO2";
+				type = "jpg";
+				path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
+				url = url + path;
+			}else if((z>=15)&&(z<=17))	{
 				path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
 				url = url + path;
 			}else if((z>=12)&&(z<=14))	{
