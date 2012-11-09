@@ -23,7 +23,7 @@ http://portal.cyberjapan.jp/portalsite/version/v4/haishin.html
                 units: "m",
                 maxResolution: maxResolution,
                 maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
-//                ,numZoomLevels: 19
+                ,numZoomLevels: 19
             });
 
             loadEnd = false;
@@ -79,7 +79,7 @@ http://portal.cyberjapan.jp/portalsite/version/v4/haishin.html
 			var path = "";
 			if(z==18)	{
 				did = "FGD";
-				type = "jpg";
+				type = "png";
 				path = did + "/latest/" +z+"/"+x.charAt(0)+y.charAt(0)+"/"+x.charAt(1)+y.charAt(1)+"/"+x.charAt(2)+y.charAt(2)+"/"+x.charAt(3)+y.charAt(3)+"/"+x.charAt(4)+y.charAt(4)+"/"+x.charAt(5)+y.charAt(5)+"/"+x+y+"."+ type; 
 				url = url + path;
 			}else if((z>=15)&&(z<=17))	{
