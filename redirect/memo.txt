@@ -1,0 +1,26 @@
+OpenLayersのTMSレイヤーで電子国土を表示するもの。
+
+利用には国土地理院背景地図等データ利用規約に従って下さい。
+ http://portal.cyberjapan.jp/portalsite/kiyaku/index.html#haikei
+
+条件
+WebサーバでPHPとmod_rewriteが使えること。
+
+/cyberjapan に.htaccess と cj.php を置く。
+
+
+OpenLayersのレイヤー
+		var layer_DJBMM = new OpenLayers.Layer.TMS(
+			"DJBMM",
+			"/cyberjapan/",
+			{
+				layername: "DJBMM"
+				,type: "png"
+				,isBaseLayer: false
+				,visibility: false
+			}
+		);
+
+地図とオルソの切り替えは DJBMM を変更
+	DJBMM	地図
+	DJBMO	オルソ
